@@ -387,5 +387,15 @@ FodyWeavers.xsd
 *.msm
 *.msp
 
-# JetBrains Rider
+JetBrains Rider
+
 *.sln.iml
+
+Always include runtime/resource files
+
+!.dll
+!.bmp
+!.wav
+!**/.dll
+!/*.bmp
+!/*.wav
