@@ -17,18 +17,18 @@ typedef enum {
     FISH_NORMAL = 0,  // 기본 물고기
     FISH_FAST = 1,  // 빠르게 자라는 물고기
     FISH_BIG = 2   // 물을 많이 소비하는 물고기
-} 
+}
 
 FishType;
 
 // 게임 상태 구조체 정의
-typedef struct 
+typedef struct
 {
     int fish;
     int water;
     int isAlive;
-    FishType fishType;  
-} 
+    FishType fishType;
+}
 
 FishTank;
 
@@ -73,7 +73,7 @@ float getWaterConsumptionRate(FishType type) {
     }
 }
 
-// ★ [필수 1] 물고기 종류 이름 반환 함수
+
 const char* getFishTypeName(FishType type) {
     switch (type) {
     case FISH_NORMAL: return "Normal";
@@ -123,7 +123,7 @@ bool engine_init()
         SDL_Quit();
         return 0;
     }
-    fishTexture = loadTexture("C:\\Users\\codi7\\Downloads\\fish.bmp");
+    fishTexture = loadTexture("C:\\Users\\D510\\Desktop\\Project3 (1)\\x64\\Debug\\fish.bmp");
     if (!fishTexture) {
         SDL_Quit();
         return 0;
@@ -137,7 +137,7 @@ bool engine_init()
 
 bool initAudio()
 {
-    if (SDL_LoadWAV("C:\\Users\\codi7\\Downloads\\water.wav", &wavSpec, &wavBuffer, &wavLength) == NULL) {
+    if (SDL_LoadWAV("C:\\Users\\D510\\Desktop\\Project3 (1)\\x64\\Debug\\water.wav", &wavSpec, &wavBuffer, &wavLength) == NULL) {
         printf("WAV 파일 로드 실패: %s\n", SDL_GetError());
         return false;
     }
@@ -165,7 +165,7 @@ void initGame() {
         fishTanks[i].fish = 10;
         fishTanks[i].water = 100;
         fishTanks[i].isAlive = 1;
-        fishTanks[i].fishType = (FishType)(i % 3);  
+        fishTanks[i].fishType = (FishType)(i % 3);
     }
     startTime = SDL_GetTicks();
     lastUpdateTime = startTime;
@@ -180,7 +180,7 @@ void renderGame() {
     sprintf_s(levelText, sizeof(levelText), "Level %d", level);
     renderText(levelText, 10, 10);
 
-    
+
     renderText("N=Normal  F=Fast  B=Big", 10, 40);
 
     SDL_RenderPresent(renderer);
@@ -237,14 +237,14 @@ void renderFishTanks() {
             SDL_RenderCopy(renderer, fishTexture, NULL, &fishRect);
         }
 
-        
+
         char typeLabel[4];
         switch (fishTanks[i].fishType) {
         case FISH_NORMAL: sprintf_s(typeLabel, sizeof(typeLabel), "N"); break;
         case FISH_FAST:   sprintf_s(typeLabel, sizeof(typeLabel), "F"); break;
         case FISH_BIG:    sprintf_s(typeLabel, sizeof(typeLabel), "B"); break;
         }
-        renderText(typeLabel, x + 40, 275);  
+        renderText(typeLabel, x + 40, 275);
 
         // 물고기 수치 텍스트
         char status[64];
@@ -270,7 +270,7 @@ void updateGame() {
         for (int i = 0; i < NUM; i++) {
             if (fishTanks[i].isAlive == 1) {
 
-                
+
                 float rate = getWaterConsumptionRate(fishTanks[i].fishType);
                 int consumption = (int)(level * (fishTanks[i].fish / 20 + 1) * elapsed * rate);
                 fishTanks[i].water -= consumption;
@@ -280,7 +280,7 @@ void updateGame() {
                     fishTanks[i].isAlive = 0;
                 }
 
-                
+
                 if (fishTanks[i].water > 0) {
                     int growthBonus = (fishTanks[i].fishType == FISH_FAST) ? 2 : 1;
                     fishTanks[i].fish += ((fishTanks[i].water / 100 + 1) * elapsed * growthBonus);
