@@ -123,7 +123,7 @@ bool engine_init()
         SDL_Quit();
         return 0;
     }
-    fishTexture = loadTexture("C:\\Users\\D510\\Desktop\\Project3 (1)\\x64\\Debug\\fish.bmp");
+    fishTexture = loadTexture("C:\\2060033\\1\\Project3 (1)\\x64\\Debug\\fish.bmp");
     if (!fishTexture) {
         SDL_Quit();
         return 0;
@@ -137,7 +137,7 @@ bool engine_init()
 
 bool initAudio()
 {
-    if (SDL_LoadWAV("C:\\Users\\D510\\Desktop\\Project3 (1)\\x64\\Debug\\water.wav", &wavSpec, &wavBuffer, &wavLength) == NULL) {
+    if (SDL_LoadWAV("C:\\060033\\1\\Project3 (1)\\x64\\Debug\\water.wav", &wavSpec, &wavBuffer, &wavLength) == NULL) {
         printf("WAV 파일 로드 실패: %s\n", SDL_GetError());
         return false;
     }
