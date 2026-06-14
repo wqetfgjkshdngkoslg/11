@@ -76,8 +76,8 @@ void renderGame();
 void renderFishTanks();
 void handleInput(SDL_Event* e);
 
-// 물고기 종류별 규칙
+
 float getWaterConsumptionRate(FishType type);
 const char* getFishTypeName(FishType type);
 
-#endif // HEADER_H
+#endif 
