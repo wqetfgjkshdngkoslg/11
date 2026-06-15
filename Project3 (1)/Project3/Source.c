@@ -2,8 +2,8 @@
 #include <stdio.h>
 
 FishTank fishTanks[NUM];
-int level = 1;        
-int position = 0;    
+int level = 1;
+int position = 0;
 bool running = true;
 bool gameOver = false;
 bool gameWin = false;
@@ -36,9 +36,9 @@ int main(int argc, char* argv[]) {
 
 float getWaterConsumptionRate(FishType type) {
     switch (type) {
-    case FISH_NORMAL: return 1.0f;  
-    case FISH_FAST:   return 1.3f; 
-    case FISH_BIG:    return 2.0f; 
+    case FISH_NORMAL: return 1.0f;
+    case FISH_FAST:   return 1.3f;
+    case FISH_BIG:    return 2.0f;
     default:          return 1.0f;
     }
 }
@@ -56,8 +56,8 @@ void initGame() {
     for (int i = 0; i < NUM; i++) {
         fishTanks[i].fish = 10;
         fishTanks[i].water = 100;
-        fishTanks[i].health = MAX_HEALTH;   
-        fishTanks[i].fishLevel = 1;        
+        fishTanks[i].health = MAX_HEALTH;
+        fishTanks[i].fishLevel = 1;
         fishTanks[i].isAlive = 1;
         fishTanks[i].fishType = (FishType)(i % 3);
     }
@@ -163,8 +163,8 @@ void renderFishTanks() {
         SDL_SetRenderDrawColor(renderer, 0, 128, 255, 255);
         SDL_RenderFillRect(renderer, &water);
 
-        int fishW = 40 + (fishTanks[i].fishLevel - 1) * 10; 
-        int fishH = 30 + (fishTanks[i].fishLevel - 1) * 6;  
+        int fishW = 40 + (fishTanks[i].fishLevel - 1) * 10;
+        int fishH = 30 + (fishTanks[i].fishLevel - 1) * 6;
         SDL_Rect fishRect = {
             x + (FISHTANK_WIDTH - fishW) / 2,
             300 + FISHTANK_HEIGHT - waterHeight - fishH,
@@ -176,22 +176,19 @@ void renderFishTanks() {
                 SDL_RenderCopy(renderer, fishTexture, NULL, &fishRect);
             }
             else {
-                
                 switch (fishTanks[i].fishType) {
-                case FISH_NORMAL: SDL_SetRenderDrawColor(renderer, 255, 200, 0, 255); break;   
-                case FISH_FAST:   SDL_SetRenderDrawColor(renderer, 0, 230, 120, 255); break;  
-                case FISH_BIG:    SDL_SetRenderDrawColor(renderer, 255, 80, 80, 255); break;   
+                case FISH_NORMAL: SDL_SetRenderDrawColor(renderer, 255, 200, 0, 255); break;
+                case FISH_FAST:   SDL_SetRenderDrawColor(renderer, 0, 230, 120, 255); break;
+                case FISH_BIG:    SDL_SetRenderDrawColor(renderer, 255, 80, 80, 255); break;
                 }
                 SDL_RenderFillRect(renderer, &fishRect);
             }
         }
         else {
-            
             SDL_SetRenderDrawColor(renderer, 110, 110, 110, 255);
             SDL_RenderFillRect(renderer, &fishRect);
         }
 
-        
         char typeLabel[4];
         switch (fishTanks[i].fishType) {
         case FISH_NORMAL: sprintf_s(typeLabel, sizeof(typeLabel), "N"); break;
@@ -200,20 +197,22 @@ void renderFishTanks() {
         }
         renderText(typeLabel, x + 40, 275);
 
-        
-        char status[64];
-        if (fishTanks[i].isAlive)
-            sprintf_s(status, sizeof(status), "F:%d W:%d H:%d Lv%d",
-                fishTanks[i].fish, fishTanks[i].water, fishTanks[i].health, fishTanks[i].fishLevel);
-        else
-            sprintf_s(status, sizeof(status), "DEAD");
-        renderText(status, x + 2, 520);
+        if (fishTanks[i].isAlive) {
+            char line1[32], line2[32];
+            sprintf_s(line1, sizeof(line1), "F:%d W:%d", fishTanks[i].fish, fishTanks[i].water);
+            sprintf_s(line2, sizeof(line2), "H:%d Lv%d", fishTanks[i].health, fishTanks[i].fishLevel);
+            renderTextSmall(line1, x + 2, 505);
+            renderTextSmall(line2, x + 2, 522);
+        }
+        else {
+            renderTextSmall("DEAD", x + 2, 505);
+        }
 
         SDL_Color red = { 255, 70, 70, 255 };
         if (fishTanks[i].isAlive && fishTanks[i].water < WATER_WARNING)
-            renderTextColor("Low water!", x, 540, red);
+            renderTextColorSmall("Low water!", x + 2, 539, red);
         if (fishTanks[i].isAlive && fishTanks[i].health < HEALTH_DANGER)
-            renderTextColor("DANGER!", x, 560, red);
+            renderTextColorSmall("DANGER!", x + 2, 556, red);
 
         if (i == position) {
             SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);

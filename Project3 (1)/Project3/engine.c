@@ -4,6 +4,7 @@
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 TTF_Font* font = NULL;
+TTF_Font* smallFont = NULL;
 SDL_Texture* fishTexture = NULL;
 
 SDL_AudioDeviceID audioDevice = 0;
@@ -32,6 +33,12 @@ bool engine_init()
         printf("폰트 로드 실패: %s\n", TTF_GetError());
         SDL_Quit();
         return 0;
+    }
+
+    smallFont = TTF_OpenFont("C:\\Windows\\Fonts\\arial.ttf", 13);
+    if (!smallFont) {
+        printf("작은 폰트 로드 실패: %s - 기본 폰트로 대체합니다.\n", TTF_GetError());
+        smallFont = font;
     }
 
     fishTexture = loadTexture("C:\\2060033\\1\\Project3 (1)\\x64\\Debug\\fish.bmp");
@@ -101,6 +108,23 @@ void renderText(const char* text, int x, int y) {
     renderTextColor(text, x, y, color);
 }
 
+void renderTextColorSmall(const char* text, int x, int y, SDL_Color color) {
+    SDL_Surface* surface = TTF_RenderText_Solid(smallFont, text, color);
+    if (!surface) return;
+
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_Rect dest = { x, y, surface->w, surface->h };
+    SDL_RenderCopy(renderer, texture, NULL, &dest);
+
+    SDL_FreeSurface(surface);
+    SDL_DestroyTexture(texture);
+}
+
+void renderTextSmall(const char* text, int x, int y) {
+    SDL_Color color = { 255, 255, 255 };
+    renderTextColorSmall(text, x, y, color);
+}
+
 void cleanupGame() {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
@@ -118,6 +142,7 @@ void cleanupGame() {
     if (fishTexture) SDL_DestroyTexture(fishTexture);
     if (audioDevice != 0) SDL_CloseAudioDevice(audioDevice);
     if (wavBuffer != NULL) SDL_FreeWAV(wavBuffer);
+    if (smallFont && smallFont != font) TTF_CloseFont(smallFont);
     if (font) TTF_CloseFont(font);
     if (renderer) SDL_DestroyRenderer(renderer);
     if (window) SDL_DestroyWindow(window);

@@ -127,9 +127,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="engine.c" />
-    <ClCompile Include="FileName.c">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="Source.c" />
   </ItemGroup>
   <ItemGroup>
